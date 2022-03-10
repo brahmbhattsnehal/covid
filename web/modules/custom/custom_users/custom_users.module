@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * @File
+ * Example custom module for Drupal 8.
+ */
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implementing hook_menu().
+ */
+function custom_users_views_pre_view(ViewExecutable $view, $display_id, array &$args) {
+  $user = \Drupal\user\Entity\User::load(\Drupal::currentUser()->id());
+  $user_select_city = $user->get('field_select_city')->target_id;
+  if ($display_id == 'block_2' && !empty($user_select_city)) {
+    $args[0] = $user_select_city;
+  } else {
+    unset($args);
+  }
+}
+
+?>
